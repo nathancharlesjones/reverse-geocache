@@ -1,4 +1,4 @@
-#include "main.h"
+#include "application.h"
 #include <pthread.h>
 #include <semaphore.h>
 //#include "../libraries/TinyGPS-13/TinyGPS.h"
@@ -9,12 +9,6 @@
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
 #endif
-
-float destination_lat = 14;
-float destination_long = 32;
-int min_radius_m = 10;
-
-void* startScheduler(void*);
 
 sem_t buttonSemaphore;
 
@@ -63,40 +57,10 @@ MyFrame::MyFrame()
 void MyFrame::OnButtonClicked(wxCommandEvent& evt)
 {
     sem_post(&buttonSemaphore);
-    //evt.Skip();
 }
 
 wxIMPLEMENT_APP(MyApp);
 //static TinyGPS gps;
-
-void* startScheduler(void* data)
-{
-	while(1)
-	{
-		float current_lat, current_long;
-		char distance_msg[32] = {0};
-
-		wait_for_button();
-
-		display((const char *)"Waiting for satellites...\n");
-		getLocation(&current_lat, &current_long);
-
-		float distance = distanceBetween(current_lat, current_long, destination_lat, destination_long);
-		sprintf(distance_msg, "You're %f m away.\n", distance);
-		display((const char *)distance_msg);
-		
-		if(distance < min_radius_m)
-		{
-			display((const char *)"Unlocked!\n");
-			unlock();
-		}
-	}
-}
-
-void initHardware(void)
-{
-	//IMPLEMENT_APP_NO_MAIN(MyApp);
-}
 
 void wait_for_button(void)
 {

@@ -1,14 +1,8 @@
-#include <stdio.h>
-#include "main.h"
+#include <stdio.h>  // For sprintf
+#include "application.h"
 
-float destination_lat = 14;
-float destination_long = 32;
-int min_radius_m = 10;
-
-int main(void)
+void* startScheduler(void* data)
 {
-	initHardware();
-
 	while(1)
 	{
 		float current_lat, current_long;
@@ -21,14 +15,12 @@ int main(void)
 
 		float distance = distanceBetween(current_lat, current_long, destination_lat, destination_long);
 		sprintf(distance_msg, "You're %f m away.\n", distance);
-		display(distance_msg);
+		display((const char *)distance_msg);
 		
 		if(distance < min_radius_m)
 		{
-			display("Unlocked!\n");
+			display((const char *)"Unlocked!\n");
 			unlock();
 		}
 	}
-
-	return 0;
 }

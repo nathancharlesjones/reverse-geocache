@@ -1,12 +1,11 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
-// Initialize any required hardware or hardware-specific features. I.e.
-//   - x86: Create Qt window
-//   - MCU: Set up GPIO (for button, LCD, servo) and UART (for GPS module)
-//          Configure interrupts
-//
-void initHardware(void);
+const float destination_lat = 14;
+const float destination_long = 32;
+const int min_radius_m = 10;
+
+void* startScheduler(void* /* data */);
 
 // BLOCKING function call. Returns only when a "button" event (real or simulated)
 // occurs.
@@ -32,4 +31,4 @@ float distanceBetween(float /* lat1 */, float /* long1 */, float /* lat2 */, flo
 //
 void unlock(void);
 
-#endif /* MAIN_H */
+#endif /* APPLICATION_H */
